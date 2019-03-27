@@ -39,15 +39,8 @@ func main() {
 	}
 	fmt.Printf("file downloaded, %d bytes\n", n)
 
-	v := videoServer{ f: f }
-	http.HandleFunc("/", v.HandleVideo)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, f.Name())
+	})
 	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-type videoServer struct {
-	f *os.File
-}
-
-func (v videoServer) HandleVideo (responseWriter http.ResponseWriter, request *http.Request) {
-	http.ServeFile(responseWriter, request, v.f.Name())
 }
