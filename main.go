@@ -29,9 +29,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to create file %q, %v", filename, err)
 	}
-	defer func() {
-		_ = os.Remove(f.Name())
-	}()
 
 	n, err := downloader.Download(f, &s3.GetObjectInput{
 		Bucket: aws.String(bucketName),
